@@ -11,35 +11,44 @@ export const pool = new Pool({
 export const initDB = async () => {
     try {
         await pool.query(`
+
         CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
-        name VARCHAR(50) NOT NULL,
+        name VARCHAR(100) NOT NULL,
         email VARCHAR(100) UNIQUE NOT NULL,
-        password VARCHAR(100) NOT NULL,
-        is_active BOOLEAN DEFAULT true,
-        age INT,
-        role VARCHAR(10) DEFAULT 'user',
+        password TEXT NOT NULL,
+        role VARCHAR(20) DEFAULT 'contributor'
+        CHECK(role IN ('contributor', 'maintainer')),
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
-    )
-`)
+    )`)
 
-        //     await pool.query(`
-        // CREATE TABLE IF NOT EXISTS profile(
-        //     id SERIAL PRIMARY KEY,
-        //     user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
-        //     bio TEXT,
-        //     address TEXT,
-        //     phone VARCHAR(15),
-        //     gender VARCHAR(10),
+        await pool.query(`
 
-        //     created_at TIMESTAMP DEFAULT NOW(),
-        //     updated_at TIMESTAMP DEFAULT NOW()
-        // )
-        //     `)
+    CREATE TABLE IF NOT EXISTS issues(
+    id SERIAL PRIMARY KEY,
+
+    title VARCHAR(150) NOT NULL,
+
+    description TEXT NOT NULL,
+    type VARCHAR(30) NOT NULL
+    CHECK(type IN ('bug', 'feature_request')),
+
+    status VARCHAR(30) DEFAULT 'open'
+    CHECK(status IN ('open', 'in_progress', 'resolved')),
+
+    reporter_id INT NOT NULL,
+
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+    )`)
+
 
         console.log('Database connected successfully')
-    } catch (error) {
+
+    }
+
+    catch (error) {
         console.log('Database Error:', error)
     }
 }

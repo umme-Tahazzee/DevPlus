@@ -4,6 +4,9 @@ import express, {
     type Response
 } from 'express'
 import cors from 'cors'
+import { userRoute } from './module/user/user.route.js'
+import globalErrorHandler from './middleware/globalerror.js'
+
 
 
 const app: Application = express()
@@ -25,6 +28,10 @@ app.get('/', (req: Request, res: Response) => {
     })
 })
 
+
+
+app.use('/api/users', userRoute)
+app.use(globalErrorHandler)
 
 // server
 export default app;

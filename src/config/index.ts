@@ -10,8 +10,8 @@ dotenv.config({
 const config = {
     connectionString: process.env.DATABASE_URL as string,
     port: Number(process.env.PORT),
-    secret: process.env.JWT_SECRET,
-    refresh_secrect: process.env.JWT_REFRESH_SECRET
+    // secret: process.env.JWT_SECRET,
+    // refresh_secrect: process.env.JWT_REFRESH_SECRET
 }
 
 export default config;
