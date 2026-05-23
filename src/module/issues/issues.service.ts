@@ -40,20 +40,56 @@ const getAllIsuessFromDb = async () => {
 
 
 const getSignleUserFromDB = async (id: string) => {
-      
-        const result = await pool.query(
-            `
+
+    const result = await pool.query(
+        `
             SELECT * FROM issues
             WHERE id = $1
             `,
-            [id]
-        )
+        [id]
+    )
 
-         return result
+    return result
 }
 
+const getUpdateIssueFromDB = async (
+    payload: Partial<Iissues>,
+    id: number
+) => {
+
+    const { title, description, type } = payload;
+
+    const result = await pool.query(
+        `
+    UPDATE issues
+    SET
+      title = COALESCE($1, title),
+      description = COALESCE($2, description),
+      type = COALESCE($3, type),
+      updated_at = NOW()
+    WHERE id = $4
+    RETURNING *
+    `,
+        [title, description, type, id]
+    );
+
+    return result;
+};
+
+const deleteUserfromDB = async (id: string) => {
+    const result = await pool.query(`
+            DELETE FROM users
+            WHERE id = $1
+            RETURNING *
+           `,
+        [id]
+    )
+    return result
+
+}
 export const isuessService = {
     createIssuesIntodb,
     getAllIsuessFromDb,
-    getSignleUserFromDB
+    getSignleUserFromDB,
+    getUpdateIssueFromDB
 }

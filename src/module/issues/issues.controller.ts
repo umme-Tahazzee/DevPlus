@@ -67,10 +67,40 @@ const getSingleIssue = async (req: Request, res: Response) => {
     }
 }
 
+const updateIssues = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const { title, description, type } = req.body
+
+
+        const result = await isuessService.getUpdateIssueFromDB(req.body, Number(id))
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Issues not found'
+            })
+        }
+
+
+        res.status(200).json({
+            success: true,
+            message: 'Issues updated successfully',
+            data: result.rows[0]
+        })
+
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
 
 export const issuesController = {
     createIssues,
     getAllIssue,
-    getSingleIssue
+    getSingleIssue,
+    updateIssues
+
 }
