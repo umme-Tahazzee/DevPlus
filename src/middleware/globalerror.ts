@@ -10,13 +10,13 @@ const globalErrorHandler = (
   let statusCode = 500;
   let message = "Something went wrong";
 
-  // PostgreSQL duplicate error
+  //  duplicate error
   if (error.code === "23505") {
     statusCode = 409;
     message = "Email already exists";
   }
 
-  // PostgreSQL not null violation
+  //  null violation
   else if (error.code === "23502") {
     statusCode = 400;
     message = "Required field is missing";
