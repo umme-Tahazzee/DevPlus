@@ -76,9 +76,9 @@ const getUpdateIssueFromDB = async (
     return result;
 };
 
-const deleteUserfromDB = async (id: string) => {
+const deleteIssueFromDB = async (id: number) => {
     const result = await pool.query(`
-            DELETE FROM users
+            DELETE FROM issues
             WHERE id = $1
             RETURNING *
            `,
@@ -87,9 +87,12 @@ const deleteUserfromDB = async (id: string) => {
     return result
 
 }
+
+
 export const isuessService = {
     createIssuesIntodb,
     getAllIsuessFromDb,
     getSignleUserFromDB,
-    getUpdateIssueFromDB
+    getUpdateIssueFromDB,
+    deleteIssueFromDB
 }
