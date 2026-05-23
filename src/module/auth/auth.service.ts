@@ -1,7 +1,8 @@
-import type { Request, Response } from "express";
+
 import { pool } from "../../db/index.js";
-import console from "node:console";
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken'
+import config from "../../config/index.js";
 
 const userLoginIntoDb = async (payload:
     {
@@ -23,6 +24,17 @@ const userLoginIntoDb = async (payload:
     if (!isPassWord) {
         throw new Error("Invalid Credentials")
     }
+    const jwtPlayload = {
+        id: user.id,
+        name: user.name,
+        email: user.email
+    }
+    //genrate token 
+    const accessToken = jwt.sign(jwtPlayload, config.secret as string, {
+        expiresIn: '2d',
+    })
+
+    return {accessToken}
 
 }
 
