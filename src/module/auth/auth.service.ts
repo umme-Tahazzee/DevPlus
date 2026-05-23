@@ -31,7 +31,7 @@ const userLoginIntoDb = async (payload:
     }
     //genrate token 
     const accessToken = jwt.sign(jwtPlayload, config.secret as string, {
-        expiresIn: '2d',
+        expiresIn: '7d',
     })
 
     return {accessToken}
