@@ -38,7 +38,22 @@ const getAllIsuessFromDb = async () => {
     return result
 }
 
+
+const getSignleUserFromDB = async (id: string) => {
+      
+        const result = await pool.query(
+            `
+            SELECT * FROM issues
+            WHERE id = $1
+            `,
+            [id]
+        )
+
+         return result
+}
+
 export const isuessService = {
     createIssuesIntodb,
-    getAllIsuessFromDb
+    getAllIsuessFromDb,
+    getSignleUserFromDB
 }
