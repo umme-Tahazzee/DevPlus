@@ -158,7 +158,7 @@ const getUpdateIssueFromDB = async (
 
     }
     const issue = issueResult.rows[0];
-    console.log(issue)
+
 
 
     if (userRole === 'maintainer') {
@@ -171,7 +171,7 @@ const getUpdateIssueFromDB = async (
 
     const { title, description, type } = payload
 
-   
+
     const result = await pool.query(
         `UPDATE issues
          SET
@@ -190,15 +190,28 @@ const getUpdateIssueFromDB = async (
 
 // Issue ডিলিট করো
 
-const deleteIssueFromDB = async (id: number, requesterId : number) => {
+const deleteIssueFromDB = async (id: number, requesterId: number) => {
 
-    
+    const userResult = await pool.query(`
+            SELECT role FROM users WHERE id=$1`,
+        [requesterId])
 
-    const result = await pool.query(
+
+    const userRole = userResult.rows?.[0]?.role
+
+    if (userRole !== 'maintainer') {
+        throw new Error("You are not authorized to delete this issue");
+    }
+
+
+      const result = await pool.query(
         `DELETE FROM issues WHERE id = $1 RETURNING *`,
         [id]
     );
 
+    if (result.rowCount === 0) {
+        throw new Error("Issue not found");
+    }
 
 
     return result;

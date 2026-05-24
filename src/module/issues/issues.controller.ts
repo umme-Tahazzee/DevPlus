@@ -100,13 +100,6 @@ const deleteIssues = async (req: Request, res: Response, next: NextFunction) => 
         const result = await isuessService.deleteIssueFromDB(Number(id), requesterId );
 
 
-        if (result.rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Issue not found",
-            });
-        }
-
         res.status(200).json({
             success: true,
             message: "Issue deleted successfully",
