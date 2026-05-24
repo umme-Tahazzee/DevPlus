@@ -163,7 +163,7 @@ const getUpdateIssueFromDB = async (
 
     if (userRole === 'maintainer') {
 
-    } else if (userRole === "contributor" && requesterId === issueId && issue.status === 'open') {
+    } else if (userRole === "contributor" && requesterId === issue.reporter_id && issue.status === 'open') {
 
     } else {
         throw new Error("You are not authorized to update this issue");

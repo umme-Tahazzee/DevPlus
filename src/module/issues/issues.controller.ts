@@ -6,7 +6,7 @@ import { isuessService } from "./issues.service.js";
 
 const createIssues = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // JWT থেকে reporter_id নাও (auth middleware সেট করে দেয়)
+        
         const reporter_id = req.user.id;
 
         const result = await isuessService.createIssuesIntodb(req.body, reporter_id);
