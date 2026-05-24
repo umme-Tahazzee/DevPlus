@@ -68,22 +68,21 @@ const getSingleIssue = async (req: Request, res: Response, next: NextFunction) =
 const updateIssues = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
+        const requesterId = req.user.id; 
+        // console.log(requesterId)
 
-        const result = await isuessService.getUpdateIssueFromDB(req.body, Number(id));
-
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Issue not found",
-            });
-        }
+        const result = await isuessService.getUpdateIssueFromDB(
+            req.body,
+            Number(id),
+            requesterId  
+        );
 
         res.status(200).json({
             success: true,
-            message: "Issue updated successfully",
-            data: result.rows[0],
+            message: 'Issue updated successfully',
+            data: result.rows[0]
         });
+
     } catch (error) {
         next(error);
     }
@@ -95,8 +94,10 @@ const updateIssues = async (req: Request, res: Response, next: NextFunction) => 
 const deleteIssues = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
+        const requesterId = req.user.id; 
+        
 
-        const result = await isuessService.deleteIssueFromDB(Number(id));
+        const result = await isuessService.deleteIssueFromDB(Number(id), requesterId );
 
 
         if (result.rows.length === 0) {

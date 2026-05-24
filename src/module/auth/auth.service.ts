@@ -7,7 +7,8 @@ import config from "../../config/index.js";
 const userLoginIntoDb = async (payload:
     {
         email: string,
-        password: string
+        password: string,
+        
     }) => {
 
     const { email, password } = payload
@@ -46,6 +47,7 @@ const userLoginIntoDb = async (payload:
     }
 
 }
+
 
 export const authService = {
 

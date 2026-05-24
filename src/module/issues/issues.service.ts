@@ -96,26 +96,26 @@ const getAllIsuessFromDb = async (sort?: string, type?: string, status?: string)
 
 const getSingleIsuues = async (id: string) => {
 
-    
+
     const issueResult = await pool.query(
         `SELECT * FROM issues WHERE id = $1`,
         [id]
     );
     const issue = issueResult.rows[0];
 
- 
+
     if (!issue) {
         throw new Error("Issue not found");
     }
 
-    
+
     const userResult = await pool.query(
         `SELECT id, name, role FROM users WHERE id = $1`,
         [issue.reporter_id]
     );
     const reporter = userResult.rows[0];
 
-   
+
     return {
         id: issue.id,
         title: issue.title,
@@ -135,35 +135,71 @@ const getSingleIsuues = async (id: string) => {
 
 // Issue update 
 
-const getUpdateIssueFromDB = async (payload: Partial<Iissues>, id: number) => {
 
-    const { title, description, type, status } = payload;
+const getUpdateIssueFromDB = async (
+    payload: Partial<Iissues>,
+    issueId: number,
+    requesterId: number
+) => {
 
+    //    role comes from user table 
+
+    const userResult = await pool.query(`
+            SELECT role FROM users WHERE id=$1`,
+        [requesterId])
+
+    const userRole = userResult.rows?.[0]?.role
+    const issueResult = await pool.query(`
+          SELECT * FROM issues WHERE id=$1`,
+        [issueId])
+
+    if (issueResult.rows[0].length === 0) {
+        throw new Error("Issue not found");
+
+    }
+    const issue = issueResult.rows[0];
+    console.log(issue)
+
+
+    if (userRole === 'maintainer') {
+
+    } else if (userRole === "contributor" && requesterId === issueId && issue.status === 'open') {
+
+    } else {
+        throw new Error("You are not authorized to update this issue");
+    }
+
+    const { title, description, type } = payload
+
+   
     const result = await pool.query(
         `UPDATE issues
          SET
-           title       = COALESCE($1, title),
+           title = COALESCE($1, title),
            description = COALESCE($2, description),
-           type        = COALESCE($3, type),
-           status      = COALESCE($4, status),
-           updated_at  = NOW()
-         WHERE id = $5
+           type = COALESCE($3, type),
+           updated_at = NOW()
+         WHERE id = $4
          RETURNING *`,
-        [title, description, type, status, id]
+        [title, description, type, issueId]
     );
 
     return result;
-};
 
+};
 
 // Issue ডিলিট করো
 
-const deleteIssueFromDB = async (id: number) => {
+const deleteIssueFromDB = async (id: number, requesterId : number) => {
+
+    
 
     const result = await pool.query(
         `DELETE FROM issues WHERE id = $1 RETURNING *`,
         [id]
     );
+
+
 
     return result;
 };
