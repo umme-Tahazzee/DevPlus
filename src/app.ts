@@ -9,6 +9,7 @@ import globalErrorHandler from './middleware/globalerror.js'
 import { authRoute } from './module/auth/auth.route.js'
 import { issueRoute } from './module/issues/issues.route.js'
 import logger from './middleware/logger.js'
+import router from './routes/index.js'
 
 
 
@@ -32,11 +33,11 @@ app.get('/', (req: Request, res: Response) => {
     })
 })
 
+ app.use('/api', router)
 
-
-app.use('/api/auth', userRoute)
-app.use('/api/auth', authRoute)
-app.use('/api/issues', issueRoute)
+// app.use('/api/auth', userRoute)
+// app.use('/api/auth', authRoute)
+// app.use('/api/issues', issueRoute)
 
 app.use(globalErrorHandler)
 

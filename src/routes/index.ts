@@ -6,7 +6,7 @@ import { issueRoute } from "../module/issues/issues.route.js";
 const router = Router();
 
 router.use("/auth", authRoute);
-router.use("/users", userRoute);
+router.use("/auth", userRoute);
 router.use("/issues", issueRoute);
 
 export default router;

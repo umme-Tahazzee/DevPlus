@@ -8,7 +8,7 @@ const userLoginIntoDb = async (payload:
     {
         email: string,
         password: string,
-        
+           
     }) => {
 
     const { email, password } = payload
@@ -35,16 +35,7 @@ const userLoginIntoDb = async (payload:
         expiresIn: '7d',
     })
 
-    return {accessToken ,
-        user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            created_at: user.created_at,
-            updated_at: user.updated_at
-        }
-    }
+    return { token: accessToken, user }
 
 }
 

@@ -16,6 +16,8 @@ const globalErrorHandler = (
     message = "Email already exists";
   }
 
+
+
   //  null violation
   else if (error.code === "23502") {
     statusCode = 400;
@@ -32,6 +34,15 @@ const globalErrorHandler = (
   else if (error.message) {
     message = error.message;
   }
+  else if (error.name === "TokenExpiredError") {
+    statusCode = 401;
+    message = "Token has expired";
+}
+  else if (error.message === "You are not authorized") {
+    statusCode = 401;
+    message = "You are not authorized";
+}
+
 
   res.status(statusCode).json({
     success: false,

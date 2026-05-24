@@ -9,5 +9,5 @@ export interface Iissues {
     description: string
     type: string
     status?: ISSUE_STATUS
-    reporter_id : number
+    
 }
