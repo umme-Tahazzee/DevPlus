@@ -2,142 +2,123 @@ import type { NextFunction, Request, Response } from "express";
 import { isuessService } from "./issues.service.js";
 
 
+//    POST /api/issues
 
 const createIssues = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // JWT থেকে reporter_id নাও (auth middleware সেট করে দেয়)
         const reporter_id = req.user.id;
-        const result = await isuessService.createIssuesIntodb(
-            req.body,
-            reporter_id
-        );
+
+        const result = await isuessService.createIssuesIntodb(req.body, reporter_id);
+
         res.status(201).json({
             success: true,
             message: "Issue created successfully",
-            data: result.rows[0],
+            data: result,
         });
     } catch (error) {
         next(error);
     }
-}
+};
+
+
+//  GET /api/issues (/api/issues?sort=oldest&type=bug&status=open)
+
 
 const getAllIssue = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
-        //  /api/issues?sort=oldest&type=bug
-        const { sort, type, status } = req.query
+        const { sort, type, status } = req.query;
 
         const result = await isuessService.getAllIsuessFromDb(
             sort as string,
             type as string,
             status as string
-        )
+        );
 
-        res.status(200).json({   
+        res.status(200).json({
             success: true,
+            message: "Issues retrieved successfully",
             data: result,
-        })
-
+        });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
 
-const getSingleIssue = async (req: Request, res: Response) => {
+//   GET /api/issues/:id
 
+const getSingleIssue = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const result = await isuessService.getSingleIsuues(req.params.id as string);
 
-        const { id } = req.params
+        res.status(200).json({
+            success: true,
+            message: "Issue retrieved successfully",
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 
-        const result = await isuessService.getSignleUserFromDB(id as string)
+//   PATCH /api/issues/:id
+
+const updateIssues = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+
+        const result = await isuessService.getUpdateIssueFromDB(req.body, Number(id));
+
 
         if (result.rows.length === 0) {
             return res.status(404).json({
                 success: false,
-                message: 'User not found'
-            })
+                message: "Issue not found",
+            });
         }
 
         res.status(200).json({
             success: true,
-            data: result.rows[0]
-        })
-
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
+            message: "Issue updated successfully",
+            data: result.rows[0],
+        });
+    } catch (error) {
+        next(error);
     }
-}
+};
 
-const updateIssues = async (req: Request, res: Response) => {
+
+//  DELETE /api/issues/:id
+
+const deleteIssues = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id } = req.params
-        const { title, description, type } = req.body
+        const { id } = req.params;
+
+        const result = await isuessService.deleteIssueFromDB(Number(id));
 
 
-        const result = await isuessService.getUpdateIssueFromDB(req.body, Number(id))
         if (result.rows.length === 0) {
             return res.status(404).json({
                 success: false,
-                message: 'Issues not found'
-            })
+                message: "Issue not found",
+            });
         }
-
 
         res.status(200).json({
             success: true,
-            message: 'Issues updated successfully',
-            data: result.rows[0]
-        })
-
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
+            message: "Issue deleted successfully",
+        });
+    } catch (error) {
+        next(error);
     }
-}
-
-
-const deleteIssues = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params
-       
-
-
-        const result = await isuessService.deleteIssueFromDB(Number(id))
-        if (result.rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: 'Issues not found'
-            })
-        }
-
-
-        res.status(200).json({
-            success: true,
-            message: 'Issues Deleted successfully',
-           
-        })
-
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        })
-    }
-
-}
-
+};
 
 export const issuesController = {
     createIssues,
     getAllIssue,
     getSingleIssue,
     updateIssues,
-    deleteIssues
-
-}
+    deleteIssues,
+};
