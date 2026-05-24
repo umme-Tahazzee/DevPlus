@@ -21,20 +21,25 @@ const createIssues = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 const getAllIssue = async (req: Request, res: Response, next: NextFunction) => {
-
     try {
+        
+        //  /api/issues?sort=oldest&type=bug
+        const { sort, type, status } = req.query
 
-        const result = await isuessService.getAllIsuessFromDb();
-        res.status(201).json({
+        const result = await isuessService.getAllIsuessFromDb(
+            sort as string,
+            type as string,
+            status as string
+        )
+
+        res.status(200).json({   
             success: true,
-            message: "Issue created successfully",
-            data: result.rows,
-        });
+            data: result,
+        })
+
     } catch (error) {
-        next(error);
+        next(error)
     }
-
-
 }
 
 

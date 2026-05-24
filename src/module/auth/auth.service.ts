@@ -27,14 +27,23 @@ const userLoginIntoDb = async (payload:
     const jwtPlayload = {
         id: user.id,
         name: user.name,
-        email: user.email
+        role: user.role
     }
     //genrate token 
     const accessToken = jwt.sign(jwtPlayload, config.secret as string, {
         expiresIn: '7d',
     })
 
-    return {accessToken}
+    return {accessToken ,
+        user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+            updated_at: user.updated_at
+        }
+    }
 
 }
 
