@@ -244,9 +244,7 @@ src/
 ├── type/
 │   └── express/
 │       └── index.d.ts    # Express Request type extension
-├── utils/
-│   ├── catchAsync.ts     # Async error wrapper
-│   └── sendResponse.ts   # Standardized response helper
+├
 ├── app.ts                # Express app setup
 └── server.ts             # Server entry point
 ```
