@@ -1,13 +1,11 @@
-import "express";
+import type { UserPayload } from "../../middleware/auth.ts";
 
 declare global {
   namespace Express {
     interface Request {
-    user: {
-        id: number;
-        name: string;
-        role: string;
-    };
-}
+      user?: UserPayload;
+    }
   }
 }
+
+export {};
