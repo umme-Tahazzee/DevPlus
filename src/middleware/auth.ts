@@ -10,16 +10,16 @@ type UserPayload = {
 const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
-
+    
+    
     if (!authHeader) {
-      return res.status(401).json({ message: "No token provided" });
+      throw new Error("You are not authorized")
     }
 
-    //  format: "Bearer token"
-    const token = authHeader.split(" ")[1];
-
+    const token = authHeader;
+      
     if (!token) {
-      return res.status(401).json({ message: "Invalid token format" });
+      throw new Error("Invalid token format")
     }
 
     const decoded = jwt.verify(
@@ -32,7 +32,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     }
 
     req.user = decoded as UserPayload;
-
+    
     next();
   } catch (error) {
     next(error);

@@ -8,10 +8,11 @@ const userLoginIntoDb = async (payload:
     {
         email: string,
         password: string,
+        role: string,
            
     }) => {
 
-    const { email, password } = payload
+    const { email, password, role } = payload
 
     const userData = await pool.query(`
            SELECT * FROM users WHERE email = $1
@@ -25,16 +26,17 @@ const userLoginIntoDb = async (payload:
     if (!isPassWord) {
         throw new Error("Invalid Credentials")
     }
-    const jwtPlayload = {
+    const jwtpayload = {
         id: user.id,
         name: user.name,
         role: user.role
     }
+    
     //genrate token 
-    const accessToken = jwt.sign(jwtPlayload, config.secret as string, {
+    const accessToken = jwt.sign(jwtpayload, config.secret as string, {
         expiresIn: '7d',
     })
-
+  console.log(accessToken, user)
     return { token: accessToken, user }
 
 }

@@ -34,7 +34,7 @@ TIME    : ${duration}ms
 ----------------------------------------
 `;
 
-        // local development logging
+
         if (isDev) {
             fs.appendFile(logFilePath, log, (err) => {
                 if (err) {
@@ -43,8 +43,8 @@ TIME    : ${duration}ms
             });
         }
 
-        // vercel logs
-        console.log(log);
+        
+       
 
     });
 

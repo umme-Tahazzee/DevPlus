@@ -10,6 +10,8 @@ const loginUser = async (
     try {
 
         const result = await authService.userLoginIntoDb(req.body);
+        // console.log(result.user)
+
 
         res.status(200).json({
             success: true,
