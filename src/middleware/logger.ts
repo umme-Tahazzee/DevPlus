@@ -2,16 +2,19 @@ import fs from "fs";
 import path from "path";
 import type { Request, Response, NextFunction } from "express";
 
-// logs directory
-const logsDir = path.join(process.cwd(), "logs");
+const isDev = process.env.NODE_ENV === "development";
 
-// create logs directory if not exists
-if (!fs.existsSync(logsDir)) {
-    fs.mkdirSync(logsDir);
+let logFilePath = "";
+
+if (isDev) {
+    const logsDir = path.join(process.cwd(), "logs");
+
+    if (!fs.existsSync(logsDir)) {
+        fs.mkdirSync(logsDir);
+    }
+
+    logFilePath = path.join(logsDir, "access.log");
 }
-
-// log file path
-const logFilePath = path.join(logsDir, "access.log");
 
 const logger = (req: Request, res: Response, next: NextFunction) => {
 
@@ -22,20 +25,26 @@ const logger = (req: Request, res: Response, next: NextFunction) => {
         const duration = Date.now() - start;
 
         const log = `
-    [${new Date().toISOString()}]
-    METHOD  : ${req.method}
-    URL     : ${req.originalUrl}
-    STATUS  : ${res.statusCode}
-    IP      : ${req.ip}
-    TIME    : ${duration}ms
-    ----------------------------------------
-    `;
+[${new Date().toISOString()}]
+METHOD  : ${req.method}
+URL     : ${req.originalUrl}
+STATUS  : ${res.statusCode}
+IP      : ${req.ip}
+TIME    : ${duration}ms
+----------------------------------------
+`;
 
-        fs.appendFile(logFilePath, log, (err) => {
-            if (err) {
-                console.error("Logger Error:", err);
-            }
-        });
+        // local development logging
+        if (isDev) {
+            fs.appendFile(logFilePath, log, (err) => {
+                if (err) {
+                    console.error("Logger Error:", err);
+                }
+            });
+        }
+
+        // vercel logs
+        console.log(log);
 
     });
 
