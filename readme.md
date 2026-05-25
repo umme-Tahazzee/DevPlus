@@ -5,10 +5,9 @@ A collaborative backend API for software teams to report bugs, suggest features,
 ## Live URL
 
 ```
-https://your-deployment-url.vercel.app
+https://dev-plus-eight.vercel.app/
 ```
 
-> Replace this with your actual deployed URL (Vercel / Render / Railway)
 
 ---
 
