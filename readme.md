@@ -51,7 +51,7 @@ https://dev-plus-eight.vercel.app/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/devpulse.git
+git clone https://github.com/umme-Tahazzee/DevPlus.git
 cd devpulse
 
 # 2. Install dependencies
@@ -68,10 +68,10 @@ npm run dev
 Create a `.env` file in the project root:
 
 ```env
+DATABASE_URL=postgresql://neondb_owner:npg_pKTC4U6xPvhc@ep-lucky-math-aqr1fw6v-pooler.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 PORT=5000
-DATABASE_URL=your_postgresql_connection_string
-JWT_SECRET=your_jwt_secret_key
-JWT_REFRESH_SECRET=your_jwt_refresh_secret_key
+JWT_SECRET=abckdedXXXX,
+JWT_REFRESH_SECRET=9mXvT4qLpZ7sDcF2hJnK8wErY5uIbQaW3oPtRgVkLsNd
 ```
 
 ---
