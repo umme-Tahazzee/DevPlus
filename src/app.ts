@@ -35,9 +35,7 @@ app.get('/', (req: Request, res: Response) => {
 
  app.use('/api', router)
 
-// app.use('/api/auth', userRoute)
-// app.use('/api/auth', authRoute)
-// app.use('/api/issues', issueRoute)
+
 
 app.use(globalErrorHandler)
 

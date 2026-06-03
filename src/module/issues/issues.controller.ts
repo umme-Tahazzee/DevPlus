@@ -9,7 +9,8 @@ const createIssues = async (req: Request, res: Response, next: NextFunction) => 
         
         const reporter_id = req.user.id;
 
-        const result = await isuessService.createIssuesIntodb(req.body, reporter_id);
+        const result = await isuessService.createIssuesIntodb(req.body, 
+            reporter_id);
 
         res.status(201).json({
             success: true,
