@@ -5,7 +5,10 @@ import config from "../config/index.js"
 // database connection
 export const pool = new Pool({
     connectionString: config.connectionString
+    
 })
+
+
 
 // initialize database
 export const initDB = async () => {
@@ -36,6 +39,8 @@ export const initDB = async () => {
     )
 `)
         console.log('Database connected successfully')
+
+
     }
 
     catch (error) {

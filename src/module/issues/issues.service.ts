@@ -188,7 +188,7 @@ const getUpdateIssueFromDB = async (
 
 };
 
-// Issue ডিলিট করো
+// Issue Delete 
 
 const deleteIssueFromDB = async (id: number, requesterId: number) => {
 

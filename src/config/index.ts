@@ -16,4 +16,5 @@ const config = {
     refresh_secrect: process.env.JWT_REFRESH_SECRET
 }
 
+
 export default config;

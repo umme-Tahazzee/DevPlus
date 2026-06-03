@@ -11,6 +11,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
     
+    console.log(authHeader)
     
     if (!authHeader) {
       throw new Error("You are not authorized")
