@@ -15,6 +15,4 @@ router.delete("/:id", auth , issuesController.deleteIssues);
 
 
 
-
-
 export const issueRoute = router;
