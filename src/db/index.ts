@@ -9,7 +9,6 @@ export const pool = new Pool({
 })
 
 
-
 // initialize database
 export const initDB = async () => {
     try {

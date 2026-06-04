@@ -8,12 +8,10 @@ const userLoginIntoDb = async (payload:
     {
         email: string,
         password: string,
-        role: string,
-           
+     
     }) => {
 
-    const { email, password, role } = payload
-
+    const { email, password } = payload
     const userData = await pool.query(`
            SELECT * FROM users WHERE email = $1
         `, [email])
@@ -31,18 +29,30 @@ const userLoginIntoDb = async (payload:
         name: user.name,
         role: user.role
     }
-    
+
+    const userInfo = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        created_at: user.created_at,
+        updated_at: user.updated_at
+
+    }
+
+    console.log(userInfo)
+
     //genrate token 
     const accessToken = jwt.sign(jwtpayload, config.secret as string, {
         expiresIn: '7d',
     })
- 
-    return { token: accessToken, user }
+
+
+    return { token: accessToken, user: userInfo }
 
 }
 
 
 export const authService = {
-
     userLoginIntoDb
 };
